@@ -20,25 +20,25 @@ class DataObject
       \JDZ\Utilities\Traits\Set,
       \JDZ\Utilities\Traits\Error;
   
-	/**
-	 * Constructor 
+  /**
+   * Constructor 
    * 
-	 * @param 	array  $properties  Key/Value pairs.
-	 */
-	public function __construct(array $properties=[])
-	{
-		if ( $properties !== null ){
-			$this->setProperties($properties);
-		}
+   * @param   array  $properties  Key/Value pairs.
+   */
+  public function __construct(array $properties=[])
+  {
+    if ( $properties !== null ){
+      $this->setProperties($properties);
+    }
     
     $this->clean();
-	}
+  }
   
-	/**
-	 * Clean object
+  /**
+   * Clean object
    * 
-	 * @return 	void
-	 */
+   * @return   void
+   */
   protected function clean()
   {
     if ( $params = $this->get('params') ){
@@ -46,12 +46,12 @@ class DataObject
     }
   }
   
-	/**
-	 * Convert json params to array
+  /**
+   * Convert json params to array
    * 
-	 * @param 	string    $params   Json encoded data
-	 * @return 	void
-	 */
+   * @param   string    $params   Json encoded data
+   * @return   void
+   */
   protected function setParams($params)
   {
     $registry = new Registry();
@@ -59,11 +59,11 @@ class DataObject
     $this->set('params', $registry->toArray());
   }
   
-	/**
-	 * {@inheritDoc}
- 	 */
-	public function filterGetProperties(array $properties=[])
-	{
-		return array_merge($properties, ['db']);
-	}
+  /**
+   * {@inheritDoc}
+    */
+  public function filterGetProperties(array $properties=[])
+  {
+    return array_merge($properties, ['db']);
+  }
 }

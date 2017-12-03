@@ -14,19 +14,19 @@ namespace JDZ\Utilities\Traits;
  */
 trait Ns 
 {
-	/**
+  /**
    * Fields namepace
    * 
-	 * @var    string   
-	 */
+   * @var    string   
+   */
   protected static $NS;
   
-	/**
-	 * Set the field namespace
+  /**
+   * Set the field namespace
    * 
-	 * @param 	string      $NS   The field namespace
-	 * @return 	void
-	 */
+   * @param   string      $NS   The field namespace
+   * @return   void
+   */
   public static function setNamespace($NS)
   {
     self::$NS = $NS;

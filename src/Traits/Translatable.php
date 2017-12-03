@@ -30,23 +30,23 @@ trait Translatable
    */
   protected static $translationDefaultValue = false;
   
-	/**
-	 * Set the default value 
-	 *
-	 * @param 	mixed   $translationDefaultValue     false, [**KEY**], '', ..
-	 * @return 	void
-	 */
+  /**
+   * Set the default value 
+   *
+   * @param   mixed   $translationDefaultValue     false, [**KEY**], '', ..
+   * @return   void
+   */
   public static function setTranslationDefaultValue($translationDefaultValue=false)
   {
     self::$translationDefaultValue = $translationDefaultValue;
   }
   
-	/**
-	 * Set the translations
-	 *
-	 * @param 	array   $translations     Key/value pairs of translations
-	 * @return 	void
-	 */
+  /**
+   * Set the translations
+   *
+   * @param   array   $translations     Key/value pairs of translations
+   * @return   void
+   */
   public static function setTranslations(array $translations=[])
   {
     if ( !isset(self::$translations) ){
@@ -58,13 +58,13 @@ trait Translatable
     }
   }
   
-	/**
-	 * Get a translation
-	 * 
-	 * @param 	string        $key      The translation key to look for
-	 * @param 	mixed         $default  The default value if not found
-	 * @return 	string|false  Translated string or false if not found
-	 */
+  /**
+   * Get a translation
+   * 
+   * @param   string        $key      The translation key to look for
+   * @param   mixed         $default  The default value if not found
+   * @return   string|false  Translated string or false if not found
+   */
   public static function getTranslation($key)
   {
     // ensure the translations were loaded
