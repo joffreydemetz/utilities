@@ -62,7 +62,6 @@ trait Translatable
    * Get a translation
    * 
    * @param   string        $key      The translation key to look for
-   * @param   mixed         $default  The default value if not found
    * @return   string|false  Translated string or false if not found
    */
   public static function getTranslation($key)
