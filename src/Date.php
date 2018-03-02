@@ -14,17 +14,65 @@ use \Exception as DateException;
 /**
  * Date object
  * 
+ * Based on the Joomla Date object
+ * 
  * @author Joffrey Demetz <joffrey.demetz@gmail.com>
  */
 class Date extends DateTime
 {
-  use \JDZ\Utilities\Traits\Translatable;
-  
   const DAY_ABBR   = "\x021\x03";
   const DAY_NAME   = "\x022\x03";
   const MONTH_ABBR = "\x023\x03";
   const MONTH_NAME = "\x024\x03";
   const DAY_SUFFIX = "\x025\x03";
+  
+  /**
+   * Holds an array of translations
+   * 
+   * Defaults are in french
+   * 
+   * @var   array
+   */
+  protected static $translations = [
+      'DAY_MON' => 'Lun', 
+      'DAY_TUE' => 'Mar',
+      'DAY_WED' => 'Mer',
+      'DAY_THU' => 'Jeu',
+      'DAY_FRI' => 'Ven',
+      'DAY_SAT' => 'Sam',
+      'DAY_SUN' => 'Dim',
+      'DAY_MONDAY' => 'lundi',
+      'DAY_TUESDAY' => 'mardi',
+      'DAY_WEDNESDAY' => 'mercredi',
+      'DAY_THURSDAY' => 'jeudi',
+      'DAY_FRIDAY' => 'vendredi',
+      'DAY_SATURDAY' => 'samedi',
+      'DAY_SUNDAY' => 'dimanche',
+      'MONTH_JANUARY' => 'janvier',
+      'MONTH_JANUARY_SHORT' => 'Jan',
+      'MONTH_FEBRUARY' => 'février',
+      'MONTH_FEBRUARY_SHORT' => 'Fév',
+      'MONTH_MARCH' => 'mars',
+      'MONTH_MARCH_SHORT' => 'Mar',
+      'MONTH_APRIL' => 'avril',
+      'MONTH_APRIL_SHORT' => 'Avr',
+      'MONTH_MAY' => 'mai',
+      'MONTH_MAY_SHORT' => 'Mai',
+      'MONTH_JUNE' => 'juin',
+      'MONTH_JUNE_SHORT' => 'Jui',
+      'MONTH_JULY' => 'juillet',
+      'MONTH_JULY_SHORT' => 'Juil',
+      'MONTH_AUGUST' => 'août',
+      'MONTH_AUGUST_SHORT' => 'Aoû',
+      'MONTH_SEPTEMBER' => 'septembre',
+      'MONTH_SEPTEMBER_SHORT' => 'Sep',
+      'MONTH_OCTOBER' => 'octobre',
+      'MONTH_OCTOBER_SHORT' => 'Oct',
+      'MONTH_NOVEMBER' => 'novembre',
+      'MONTH_NOVEMBER_SHORT' => 'Nov',
+      'MONTH_DECEMBER' => 'décembre',
+      'MONTH_DECEMBER_SHORT' => 'Déc',
+  ];
   
   /**
    * The format string to be applied when using the __toString() magic method.
@@ -102,6 +150,17 @@ class Date extends DateTime
    * @var    object
    */
   protected $_tz;
+  
+  /**
+   * Set the translations
+   *
+   * @param   array   $translations     Key/value pairs of translations
+   * @return  void
+   */
+  public static function setTranslations(array $translations=[])
+  {
+    self::$translations = array_merge(self::$translations, $translations);
+  }
   
   /**
    * Proxy for new Date()
@@ -334,19 +393,19 @@ class Date extends DateTime
     switch ($day)
     {
       case 0:
-        return $abbr ? self::getTranslation('DAY_SUN') : self::getTranslation('DAY_SUNDAY');
+        return $abbr ? $this->translate('DAY_SUN') : $this->translate('DAY_SUNDAY');
       case 1:
-        return $abbr ? self::getTranslation('DAY_MON') : self::getTranslation('DAY_MONDAY');
+        return $abbr ? $this->translate('DAY_MON') : $this->translate('DAY_MONDAY');
       case 2:
-        return $abbr ? self::getTranslation('DAY_TUE') : self::getTranslation('DAY_TUESDAY');
+        return $abbr ? $this->translate('DAY_TUE') : $this->translate('DAY_TUESDAY');
       case 3:
-        return $abbr ? self::getTranslation('DAY_WED') : self::getTranslation('DAY_WEDNESDAY');
+        return $abbr ? $this->translate('DAY_WED') : $this->translate('DAY_WEDNESDAY');
       case 4:
-        return $abbr ? self::getTranslation('DAY_THU') : self::getTranslation('DAY_THURSDAY');
+        return $abbr ? $this->translate('DAY_THU') : $this->translate('DAY_THURSDAY');
       case 5:
-        return $abbr ? self::getTranslation('DAY_FRI') : self::getTranslation('DAY_FRIDAY');
+        return $abbr ? $this->translate('DAY_FRI') : $this->translate('DAY_FRIDAY');
       case 6:
-        return $abbr ? self::getTranslation('DAY_SAT') : self::getTranslation('DAY_SATURDAY');
+        return $abbr ? $this->translate('DAY_SAT') : $this->translate('DAY_SATURDAY');
     }
   }
 
@@ -361,29 +420,29 @@ class Date extends DateTime
   {
     switch($month){
       case 1:
-        return $abbr ? self::getTranslation('MONTH_JANUARY_SHORT') : self::getTranslation('MONTH_JANUARY');
+        return $abbr ? $this->translate('MONTH_JANUARY_SHORT') : $this->translate('MONTH_JANUARY');
       case 2:
-        return $abbr ? self::getTranslation('MONTH_FEBRUARY_SHORT') : self::getTranslation('MONTH_FEBRUARY');
+        return $abbr ? $this->translate('MONTH_FEBRUARY_SHORT') : $this->translate('MONTH_FEBRUARY');
       case 3:
-        return $abbr ? self::getTranslation('MONTH_MARCH_SHORT') : self::getTranslation('MONTH_MARCH');
+        return $abbr ? $this->translate('MONTH_MARCH_SHORT') : $this->translate('MONTH_MARCH');
       case 4:
-        return $abbr ? self::getTranslation('MONTH_APRIL_SHORT') : self::getTranslation('MONTH_APRIL');
+        return $abbr ? $this->translate('MONTH_APRIL_SHORT') : $this->translate('MONTH_APRIL');
       case 5:
-        return $abbr ? self::getTranslation('MONTH_MAY_SHORT') : self::getTranslation('MONTH_MAY');
+        return $abbr ? $this->translate('MONTH_MAY_SHORT') : $this->translate('MONTH_MAY');
       case 6:
-        return $abbr ? self::getTranslation('MONTH_JUNE_SHORT') : self::getTranslation('MONTH_JUNE');
+        return $abbr ? $this->translate('MONTH_JUNE_SHORT') : $this->translate('MONTH_JUNE');
       case 7:
-        return $abbr ? self::getTranslation('MONTH_JULY_SHORT') : self::getTranslation('MONTH_JULY');
+        return $abbr ? $this->translate('MONTH_JULY_SHORT') : $this->translate('MONTH_JULY');
       case 8:
-        return $abbr ? self::getTranslation('MONTH_AUGUST_SHORT') : self::getTranslation('MONTH_AUGUST');
+        return $abbr ? $this->translate('MONTH_AUGUST_SHORT') : $this->translate('MONTH_AUGUST');
       case 9:
-        return $abbr ? self::getTranslation('MONTH_SEPTEMBER_SHORT') : self::getTranslation('MONTH_SEPTEMBER');
+        return $abbr ? $this->translate('MONTH_SEPTEMBER_SHORT') : $this->translate('MONTH_SEPTEMBER');
       case 10:
-        return $abbr ? self::getTranslation('MONTH_OCTOBER_SHORT') : self::getTranslation('MONTH_OCTOBER');
+        return $abbr ? $this->translate('MONTH_OCTOBER_SHORT') : $this->translate('MONTH_OCTOBER');
       case 11:
-        return $abbr ? self::getTranslation('MONTH_NOVEMBER_SHORT') : self::getTranslation('MONTH_NOVEMBER');
+        return $abbr ? $this->translate('MONTH_NOVEMBER_SHORT') : $this->translate('MONTH_NOVEMBER');
       case 12:
-        return $abbr ? self::getTranslation('MONTH_DECEMBER_SHORT') : self::getTranslation('MONTH_DECEMBER');
+        return $abbr ? $this->translate('MONTH_DECEMBER_SHORT') : $this->translate('MONTH_DECEMBER');
     }
   }
   
@@ -468,4 +527,20 @@ class Date extends DateTime
   {
     return (int) parent::format('U');
   }
+  
+  /**
+   * Translation
+   * 
+   * @param   string  $key  The translation key
+   * @return  string  Translated string or $key if not found
+   */
+  protected function translate($key)
+  {
+    $key = strtoupper($key);
+    if ( isset(self::$translations[$key]) ){
+      return self::$translations[$key];
+    }
+    
+    return $key;
+  }  
 }

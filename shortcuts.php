@@ -10,12 +10,11 @@
  * Set date i18n
  * 
  * @param   array   $strings   Key/value pairs of translations
- * @param   bool    $default   Default translation if not set
+ * @param   bool    $default   Default translation if not set (@deprecated)
  * @return  void
  * @author  Joffrey Demetz <joffrey.demetz@gmail.com>
  */
 function DateTranslate($strings, $default=false)
 {
   \JDZ\Utilities\Date::setTranslations($strings);
-  \JDZ\Utilities\Date::setTranslationDefaultValue('[**KEY**]');
 }

@@ -11,6 +11,7 @@ namespace JDZ\Utilities\Traits;
  * Translatable trait
  * 
  * @author Joffrey Demetz <joffrey.demetz@gmail.com>
+ * @deprecated
  */
 trait Translatable 
 {
@@ -36,7 +37,7 @@ trait Translatable
    * @param   mixed   $translationDefaultValue     false, [**KEY**], '', ..
    * @return   void
    */
-  public static function setTranslationDefaultValue($translationDefaultValue=false)
+  public static function setTranslationDefaultValue($translationDefaultValue='Unknown Error')
   {
     self::$translationDefaultValue = $translationDefaultValue;
   }

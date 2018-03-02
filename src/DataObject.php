@@ -58,12 +58,4 @@ class DataObject
     $registry->loadString($params);
     $this->set('params', $registry->toArray());
   }
-  
-  /**
-   * {@inheritDoc}
-    */
-  public function filterGetProperties(array $properties=[])
-  {
-    return array_merge($properties, ['db']);
-  }
 }
