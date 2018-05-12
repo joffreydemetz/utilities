@@ -7,8 +7,8 @@
  */
 namespace JDZ\Utilities;
 
-use \SimpleXMLElement;
-use \Exception as XmlException;
+use SimpleXMLElement;
+use Exception;
 
 /**
  * Xml object
@@ -20,10 +20,10 @@ class Xml
   /**
    * Reads a XML file
    *
-   * @param   string            $data      XML path or XML string
-   * @return   SimpleXMLElement  Xml element
-   * @throws   XmlException
-   * @see     SimpleXMLElement
+   * @param  string  $data  XML path or XML string
+   * @return SimpleXMLElement  Xml element
+   * @throws Exception
+   * @see    SimpleXMLElement
    */
   public static function populateXml($data)
   {
@@ -48,7 +48,7 @@ class Xml
         $errors[] = 'XML: '.$error->message;
       }
       
-      throw new XmlException('XML file could not be loaded : '."\n".implode("\n", $errors));
+      throw new Exception('XML file could not be loaded : '."\n".implode("\n", $errors));
     }
     
     return $xml;

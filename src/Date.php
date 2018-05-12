@@ -502,7 +502,7 @@ class Date extends DateTime
    */
   public function toSql($local=false)
   {
-    return $this->format(Dbo()->dateFormat, $local, false);
+    return $this->format(Dbo()->getDateFormat(), $local, false);
   }
   
   /**

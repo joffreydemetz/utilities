@@ -8,8 +8,7 @@ namespace JDZ\Utilities;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @package Test
- * @author  Joffrey Demetz <joffrey.demetz@gmail.com>
+ * @author Joffrey Demetz <joffrey.demetz@gmail.com>
  */
 class UtilitiesTest extends TestCase
 {

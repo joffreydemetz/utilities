@@ -30,6 +30,17 @@ trait Get
   }
   
   /**
+   * Test if the property exists
+   *
+   * @param  string  $property  The name of the property.
+   * @return bool
+   */
+  public function has($property)
+  {
+    return ( isset($this->{$property}) );
+  }
+  
+  /**
    * Returns an associative array of object properties.
    *
    * @param   boolean  $public  If true, returns only the public properties.
