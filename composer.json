@@ -4,7 +4,7 @@
     "description": "Some usefull utilties",
     "keywords": ["data","date","xml"],
     "homepage": "https://github.com/joffreydemetz/utilities/",
-    "version": "1.2.3",
+    "version": "2.0.0",
     "license": "MIT",
     
     "authors": [
@@ -15,9 +15,10 @@
             "role": "Lead"
         }
     ],
-    
+
     "require": {
-        "jdz/registry": "^1.2"
+        "php": "^7.1.3",
+        "jdz/registry": "^2.0"
     },
     
     "suggest": {
