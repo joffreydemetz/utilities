@@ -72,6 +72,8 @@ class Date extends DateTime
       'MONTH_NOVEMBER_SHORT' => 'Nov',
       'MONTH_DECEMBER' => 'décembre',
       'MONTH_DECEMBER_SHORT' => 'Déc',
+      'FROM_TO_DATES' => 'from %s to %s',
+      'STARTING_ON' => 'starting on %s',
   ];
   
   /**
@@ -169,11 +171,51 @@ class Date extends DateTime
    * @param   mixed   $tz    Time zone to be used for the date.
    * @return   Date
    */
-  public static function getInstance($date='now', $tz=null)
+  public static function create($date='now', $tz=null)
   {
     return new Date($date, $tz);
   }
 
+  /**
+   * @deprecated
+   */
+  public static function getInstance($date='now', $tz=null)
+  {
+    return self::create($date, $tz);
+  }
+  
+  public static function fromTo($from, $to)
+  {
+    $startDate = self::getInstance($from);
+    $endDate   = self::getInstance($to);
+    
+    $startsOn = $startDate->format('Z F Y');
+    $endsOn   = $endDate->format('Z F Y');
+    
+    $year  = '';
+    $month = '';
+    
+    if ( $to && $endDate->format('Z F Y') !== $startDate->format('Z F Y') ){
+      if ( $startDate->format('Y') === $endDate->format('Y') ){
+        $year = ' '.$startDate->format('Y');
+        $startsOn = $startDate->format('Z F');
+        $endsOn   = $endDate->format('Z F');
+      }
+      
+      if ( $startDate->format('F') === $endDate->format('F') ){
+        $month = ' '.$startDate->format('F');
+        $startsOn = $startDate->format('Z');
+        $endsOn   = $endDate->format('Z');
+      }
+      
+      // return sprintf(self::$tanslations['FROM_TO_DATES'], $startsOn, $endsOn.$month.$year);
+      return 'du '.$startsOn.' au '.$endsOn.$month.$year;
+    }
+
+    // return sprintf(self::$tanslations['STARTING_ON'], $startsOn);
+    return 'à partir du '.$startsOn;
+  }
+  
   /**
    * Constructor
    *

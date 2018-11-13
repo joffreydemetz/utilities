@@ -104,6 +104,15 @@ class DataObject
     return ( isset($this->{$property}) );
   }
   
+  public function all($object=true)
+  {
+    $data = $this->getProperties();
+    if ( $object ){
+      $data = (object)$data;
+    }
+    return $data;
+  }
+  
   /**
    * Returns an associative array of object properties.
    *
