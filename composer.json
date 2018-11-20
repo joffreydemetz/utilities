@@ -4,7 +4,7 @@
     "description": "Some usefull utilties",
     "keywords": ["data","date","xml"],
     "homepage": "https://github.com/joffreydemetz/utilities/",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "license": "MIT",
     
     "authors": [
@@ -17,13 +17,12 @@
     ],
 
     "require": {
-        "php": "^7.1.3",
-        "jdz/registry": "^2.0"
+        "php": "^7.1.3"
     },
     
     "suggest": {
-        "jdz/language": "To use with the Translatable trait",
-        "jdz/registry": "To use with DataObject"
+        "jdz/dbo": "To format dates with the specified sql format",
+        "jdz/language": "To use with the Translatable trait"
     },
     
     "autoload": {

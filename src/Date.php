@@ -544,7 +544,7 @@ class Date extends DateTime
    */
   public function toSql($local=false)
   {
-    return $this->format(Dbo()->getDateFormat(), $local, false);
+    return $this->format(Callisto()->getDbo()->getDateFormat(), $local, false);
   }
   
   /**
