@@ -184,38 +184,6 @@ class Date extends DateTime
     return self::create($date, $tz);
   }
   
-  public static function fromTo($from, $to)
-  {
-    $startDate = self::getInstance($from);
-    $endDate   = self::getInstance($to);
-    
-    $startsOn = $startDate->format('Z F Y');
-    $endsOn   = $endDate->format('Z F Y');
-    
-    $year  = '';
-    $month = '';
-    
-    if ( $to && $endDate->format('Z F Y') !== $startDate->format('Z F Y') ){
-      if ( $startDate->format('Y') === $endDate->format('Y') ){
-        $year = ' '.$startDate->format('Y');
-        $startsOn = $startDate->format('Z F');
-        $endsOn   = $endDate->format('Z F');
-      }
-      
-      if ( $startDate->format('F') === $endDate->format('F') ){
-        $month = ' '.$startDate->format('F');
-        $startsOn = $startDate->format('Z');
-        $endsOn   = $endDate->format('Z');
-      }
-      
-      // return sprintf(self::$tanslations['FROM_TO_DATES'], $startsOn, $endsOn.$month.$year);
-      return 'du '.$startsOn.' au '.$endsOn.$month.$year;
-    }
-
-    // return sprintf(self::$tanslations['STARTING_ON'], $startsOn);
-    return 'à partir du '.$startsOn;
-  }
-  
   /**
    * Constructor
    *
@@ -544,7 +512,8 @@ class Date extends DateTime
    */
   public function toSql($local=false)
   {
-    return $this->format(Callisto()->getDbo()->getDateFormat(), $local, false);
+    return $this->format('Y-m-d H:i:s', $local, false);
+    // return $this->format(Callisto()->getDbo()->getDateFormat(), $local, false);
   }
   
   /**

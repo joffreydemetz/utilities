@@ -24,7 +24,7 @@ class DataObject
   /**
    * Constructor 
    * 
-   * @param   array  $properties  Key/Value pairs.
+   * @param  array  $properties  Key/Value pairs.
    */
   public function __construct(array $properties=[])
   {
@@ -34,61 +34,70 @@ class DataObject
   }
   
   /**
-   * Set the object properties based on a named array/hash.
-   *
-   * @param   mixed  $properties  Either an associative array or another object.
-   * @return   boolean
+   * Set the object properties
+   * 
+   * @param   mixed  $properties  Either an associative array or another object
+   * @return  $this
+   * @deprecated 
    */
   public function setProperties($properties)
   {
-    if ( is_array($properties) || is_object($properties) ){
-      foreach((array)$properties as $k => $v){
-        $this->set($k, $v);
-      }
-      return true;
+    $this->sets((array)$properties);
+    return $this;
+  }
+  
+  /**
+   * Set some object properties
+   * 
+   * @param   array  $properties  Key / Value pairs
+   * @return  $this
+   */
+  public function sets(array $properties)
+  {
+    foreach($properties as $k => $v){
+      $this->set($k, $v);
     }
-
-    return false;
+    return $this;
   }
   
   /**
    * Modifies a property of the object, creating it if it does not already exist.
    *
-   * @param   string  $property  The name of the property.
-   * @param   mixed   $value     The value of the property to set.
-   * @return   mixed  Previous value of the property.
+   * @param  string  $property  The name of the property.
+   * @param  mixed   $value     The value of the property to set.
+   * @return $this
    */
-  public function set($property, $value = null)
+  public function set(string $property, $value=null)
   {
-    $previous = isset($this->$property) ? $this->$property : null;
-    $this->$property = $value;
-    return $previous;
+    $this->{$property} = $value;
+    return $this;
   }
   
   /**
    * Clears a property.
    *
-   * @param   string  $property  The name of the property.
-   * @return   void
+   * @param  string  $property  The name of the property.
+   * @return $this
    */
-  public function erase($property)
+  public function erase(string $property)
   {
     if ( isset($this->{$property}) ){
       unset($this->{$property});
     }
+    return $this;
   }
   
   /**
-   * Returns a property of the object or the default value if the property is not set.
+   * Returns a property of the object or the default value if the property is not set
    *
-   * @param   string  $property  The name of the property.
-   * @param   mixed   $default   The default value.
-   * @return   mixed    The value of the property.
+   * @param  string  $property  The name of the property
+   * @param  mixed   $default   The default value
+   * @return mixed The value of the property
    */
-  public function get($property, $default = null)
+  public function get(string $property, $default=null)
   {
-    if ( isset($this->$property) ){
-      return $this->$property;
+    if ( isset($this->{$property}) ){
+      return $this->{$property};
     }
     return $default;
   }
@@ -99,12 +108,12 @@ class DataObject
    * @param  string  $property  The name of the property.
    * @return bool
    */
-  public function has($property)
+  public function has($property): bool
   {
     return ( isset($this->{$property}) );
   }
   
-  public function all($object=true)
+  public function all(bool $object=true)
   {
     $data = $this->getProperties();
     if ( $object ){
@@ -116,12 +125,11 @@ class DataObject
   /**
    * Returns an associative array of object properties.
    *
-   * @param   boolean  $public  If true, returns only the public properties.
-   * @return   array
+   * @return array
    */
-  public function export()
+  public function export(): array
   {
-    return $this->getProperties();
+    return $this->all(false);
   }
   
   /**
@@ -130,7 +138,7 @@ class DataObject
    * @param   boolean  $public  If true, returns only the public properties.
    * @return   array
    */
-  public function getProperties($public=true)
+  public function getProperties(bool $public=true): array
   {
     $vars = get_object_vars($this);
     
@@ -152,21 +160,21 @@ class DataObject
   /**
    * Filter properties in getProperties()
    * 
-   * @param   array  $properties  Array of properties to ignore during export
-   * @return   array
+   * @param  array  $properties  Array of properties to ignore during export
+   * @return array
    */
-  public function filterGetProperties(array $properties=[])
+  public function filterGetProperties(array $properties=[]): array
   {
     return $properties;
   }
   
   /**
-   * Return all errors, if any, as a unique string.
+   * Return all errors, if any, as a unique string
    * 
-   * @param   string   $separator     The separator.
-   * @return   string   String containing all the errors separated by the specified sequence.
+   * @param  string  $separator  The separator
+   * @return string  String containing all the errors separated by the specified sequence
    */
-  public function getErrorsAsString($separator='<br />')
+  public function getErrorsAsString(string $separator='<br />'): string
   {
     $errors = $this->errors;
     
@@ -178,25 +186,24 @@ class DataObject
   }
   
   /**
-   * Return all errors, if any.
+   * Return all errors, if any
    * 
-   * @return   array  Array of error messages or Exception instances.
+   * @return array  Array of error messages or Exception instances
    */
-  public function getErrors()
+  public function getErrors(): array
   {
     return $this->errors;
   }
   
   /**
-   * Get an error message.
+   * Get an error message
    *
-   * @param   integer  $i         Option error index.
-   * @param   boolean  $toString  Indicates if Exception instances should return the error message or the exception object.
-   * @return   string   Error message
+   * @param  integer  $i         Option error index
+   * @return string   Error message
    */
-  public function getError($i=null, $toString=true)
+  public function getError(?int $i=null): string
   {
-    if ( $i === null ){
+    if ( null === $i ){
       $error = end($this->errors);
     }
     else {
@@ -217,8 +224,8 @@ class DataObject
   /**
    * Add an error message.
    *
-   * @param   mixed  $error  Error message or exception instance
-   * @return   void
+   * @param  mixed  $error  Error message or exception instance
+   * @return $this
    */
   public function setError($error)
   {
@@ -227,5 +234,6 @@ class DataObject
     }
     
     array_push($this->errors, $error);
+    return $this;
   }
 }
