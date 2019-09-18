@@ -7,9 +7,6 @@
  */
 namespace JDZ\Utilities;
 
-use SimpleXMLElement;
-use Exception;
-
 /**
  * Xml object
  *
@@ -21,17 +18,17 @@ class Xml
    * Reads a XML file
    *
    * @param  string  $data  XML path or XML string
-   * @return SimpleXMLElement  Xml element
-   * @throws Exception
-   * @see    SimpleXMLElement
+   * @return \SimpleXMLElement  Xml element
+   * @throws \Exception
+   * @see    \SimpleXMLElement
    */
   public static function populateXml($data)
   {
-    $isFile = ( is_file($data) );
+    $isFile = strlen($data) <= PHP_MAXPATHLEN && is_file($data);
     
     libxml_use_internal_errors(true);
     
-    if ( $isFile === true ){
+    if ( true === $isFile ){
       $xml = simplexml_load_file($data, '\SimpleXMLElement');
     }
     else {
@@ -40,7 +37,7 @@ class Xml
     
     if ( empty($xml) ){
       $errors=[];
-      if ( $isFile === true ){
+      if ( true === $isFile ){
         $errors[] = $data;
       }
       
@@ -48,7 +45,7 @@ class Xml
         $errors[] = 'XML: '.$error->message;
       }
       
-      throw new Exception('XML file could not be loaded : '."\n".implode("\n", $errors));
+      throw new \Exception('XML file could not be loaded : '."\n".implode("\n", $errors));
     }
     
     return $xml;

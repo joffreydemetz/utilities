@@ -380,6 +380,16 @@ class Date extends DateTime
     return $return;
   }
 
+  public function zfyDateWithYearOrNot(): string
+  {
+    $now = self::create('now');
+    
+    if ( $this->format('Y') === $now->format('Y') ){
+      return $this->format('Z F');
+    }
+    return $this->format('Z F Y');
+  }
+
   /**
    * Get the time offset from GMT in hours or seconds.
    *
@@ -513,7 +523,7 @@ class Date extends DateTime
   public function toSql($local=false)
   {
     return $this->format('Y-m-d H:i:s', $local, false);
-    // return $this->format(Callisto()->getDbo()->getDateFormat(), $local, false);
+    // return $this->format(Kernel()->dbo->getDateFormat(), $local, false);
   }
   
   /**
