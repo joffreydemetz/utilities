@@ -16,10 +16,9 @@ use ErrorException;
  */
 abstract class StringHelper
 {  
-  public static function compareForOrder(string $str1, string $str2)
+  public static function compareForOrder(string $str1, string $str2, bool $caseSensitive=false)
   {
-    // return strcmp(self::cleanForOrder($str1), self::cleanForOrder($str2));
-    return strcmp(mb_strtolower(self::cleanForOrder($str1), mb_internal_encoding()), mb_strtolower(self::cleanForOrder($str2), mb_internal_encoding()));
+    return strcmp(self::cleanForOrder($str1, $caseSensitive), self::cleanForOrder($str2, $caseSensitive));
   }
   
   /** 
@@ -28,11 +27,14 @@ abstract class StringHelper
    * @param  string  $str
    * @return string 
    */
-  public static function cleanForOrder(string $str): string
+  public static function cleanForOrder(string $str, bool $caseSensitive=true): string
   {
     $str = self::removeAccents($str);
     $str = preg_replace("/^[^a-z0-9 ]/i", "", $str);
     $str = trim($str);
+    if ( false === $caseSensitive ){
+      $str = mb_strtolower($str, mb_internal_encoding());
+    }
     return $str;
   }
   
