@@ -14,15 +14,63 @@ namespace JDZ\Utilities;
  */
 class Timer 
 {
-  protected $parent;
-  protected $name;
-  protected $start;
-  protected $duration;
-  protected $end;
-  protected $level = 1;
-  protected $steps = [];
-  protected $timers = [];
-  protected static $instances;
+  public $parent;
+  
+  /**
+   * Timer name
+   * 
+   * @var  string
+   */
+  public $name;
+  
+  /**
+   * Start point
+   * 
+   * @var  float
+   */
+  public $start = 0;
+  
+  /**
+   * End point
+   * 
+   * @var  float
+   */
+  public $end = 0;
+  
+  /**
+   * Timer duration
+   * 
+   * @var  float
+   */
+  public $duration = 0;
+  
+  /**
+   * List of step instances
+   * 
+   * @var  Step[]
+   */
+  public $steps = [];
+  
+  /**
+   * Timer level
+   * 
+   * @var  int
+   */
+  public $level = 1;
+  
+  /**
+   * Children timers
+   * 
+   * @var  Timer[]
+   */
+  public $timers = [];
+  
+  /**
+   * Timer instances
+   * 
+   * @var  Timer[]
+   */
+  public static $instances;
   
   public static function create(string $timer)
   {
@@ -76,26 +124,6 @@ class Timer
     return $this;
   }
   
-  public function getParent(): Timer
-  {
-    return $this->parent;
-  }
-  
-  public function getName(): string
-  {
-    return $this->name;
-  }
-  
-  public function getStart(): float
-  {
-    return $this->start;
-  }
-  
-  public function getEnd(): float
-  {
-    return $this->end;
-  }
-  
   public function getFullDuration(): float
   {
     $duration = $this->end - $this->getRootStart();
@@ -103,11 +131,6 @@ class Timer
       $duration = $timer->getFullDuration();
     }
     return $duration;
-  }
-  
-  public function getLevel(): int
-  {
-    return $this->level;
   }
   
   public function getRootStart(): float

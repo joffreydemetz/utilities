@@ -19,42 +19,42 @@ class Step
    * 
    * @var  string
    */
-  protected $label;
+  public $label = '';
   
   /**
    * Label complementary info
    * 
    * @var  string
    */
-  protected $info;
+  public $info = '';
   
   /**
    * Start point
    * 
    * @var  float
    */
-  protected $start;
+  public $start = 0;
   
   /**
    * End point
    * 
    * @var  float
    */
-  protected $end;
+  public $end = null;
   
   /**
    * Timer instance
    * 
    * @var  Timer
    */
-  protected $timer = null;
+  public $timer = null;
   
   /**
    * List of step message
    * 
    * @var  [string]
    */
-  protected $messages = [];
+  public $messages = [];
   
   public static function create(string $label)
   {
@@ -67,42 +67,12 @@ class Step
     $this->start = microtime(true);
   }
   
-  public function getLabel(): string
-  {
-    return $this->label;
-  }
-  
-  public function getInfo(): string
-  {
-    return isset($this->info) ? $this->info : '';
-  }
-  
-  public function getStart(): float
-  {
-    return $this->start;
-  }
-  
-  public function getEnd(): float
-  {
-    return $this->end;
-  }
-  
   public function getDuration(): float
   {
     $end = isset($this->end) ? $this->end : microtime(true);
     $duration = $end - $this->start;
     return $duration;
     // return round(min($duration, 0.000001), 6);
-  }
-  
-  public function getMessages(): array
-  {
-    return $this->messages;
-  }
-  
-  public function getTimers(): array
-  {
-    return $this->timers;
   }
   
   public function setTimer(Timer $timer)
@@ -125,7 +95,7 @@ class Step
   
   public function isEnded()
   {
-    return isset($this->end);
+    return null !== $this->end;
   }
   
   public function end()

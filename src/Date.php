@@ -523,7 +523,7 @@ class Date extends DateTime
   public function toSql($local=false)
   {
     return $this->format('Y-m-d H:i:s', $local, false);
-    // return $this->format(Kernel()->dbo->getDateFormat(), $local, false);
+    // return $this->format(Kernel()->dbo->dateFormat, $local, false);
   }
   
   /**

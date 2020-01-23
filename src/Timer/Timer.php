@@ -21,42 +21,42 @@ class Timer
    * 
    * @var  string
    */
-  protected $name;
+  public $name = '';
   
   /**
    * Start point
    * 
    * @var  float
    */
-  protected $start;
+  public $start = 0;
   
   /**
    * End point
    * 
    * @var  float
    */
-  protected $end;
+  public $end = 0;
   
   /**
    * Timer duration
    * 
    * @var  float
    */
-  protected $duration;
+  // public $duration = 0;
   
   /**
    * List of step instances
    * 
    * @var  [Step]
    */
-  protected $steps = [];
+  public $steps = [];
   
   /**
    * Last marker
    * 
    * @var  float
    */
-  protected $markerSince;
+  public $markerSince = 0;
   
   public static function create(string $name='ROOT')
   {
@@ -73,7 +73,7 @@ class Timer
   {
     $this->start = microtime(true);
     $this->end = null;
-    $this->duration = null;
+    // $this->duration = null;
     $this->markerSince = null;
     $this->steps = [];
     return $this;
@@ -86,21 +86,6 @@ class Timer
     return str_pad($elapsed, 9, ' ', STR_PAD_LEFT);
   }
   
-  public function getName(): string
-  {
-    return $this->name;
-  }
-  
-  public function getStart(): float
-  {
-    return $this->start;
-  }
-  
-  public function getEnd(): float
-  {
-    return $this->end;
-  }
-  
   public function getDuration(): float
   {
     $end = isset($this->end) ? $this->end : microtime(true);
@@ -111,14 +96,9 @@ class Timer
   public function getTimeToLaunch(): float
   {
     if ( count($this->steps) ){
-      return $this->steps[\array_key_first($this->steps)]->getStart() - $this->start;
+      return $this->steps[\array_key_first($this->steps)]->start - $this->start;
     }
     return 0;
-  }
-  
-  public function getCurrentStep()
-  {
-    return $this->currentStep();
   }
   
   public function getStepAverage(): float
@@ -215,7 +195,7 @@ class Timer
     
     if ( !$this->isEmpty() ){
       foreach($this->steps as $step){
-        $dump[] = $step->getInfo().' '.$step->getLabel();
+        $dump[] = trim($step->info.' '.$step->label);
       }
     }
     
@@ -226,15 +206,6 @@ class Timer
   {
     if ( count($this->steps) ){
       return $this->steps[\array_key_last($this->steps)];
-      
-      // $step = end($this->steps);
-      // current($this->steps);
-      
-      // while(!is_null($key=key($this->steps))){
-        // if ( !$step->isEnded() ){
-          // return $step;
-        // }
-      // }
     }
     
     return false;
