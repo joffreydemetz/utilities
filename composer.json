@@ -4,7 +4,7 @@
     "description": "Some usefull utilties",
     "keywords": ["data","date","xml"],
     "homepage": "https://github.com/joffreydemetz/utilities/",
-    "version": "2.0.9",
+    "version": "2.1.0",
     "license": "MIT",
     
     "authors": [
@@ -23,9 +23,6 @@
     "autoload": {
         "psr-4": {
             "JDZ\\Utilities\\": "src"
-        },
-        "files": [
-            "shortcuts.php"
-        ]
+        }
     }
 }

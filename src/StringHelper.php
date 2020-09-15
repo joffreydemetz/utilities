@@ -68,8 +68,9 @@ abstract class StringHelper
     }
     $str = preg_replace("/\n\n/", "</p> <p>", $str);
     $str = trim($str);
-    $str = preg_replace("/<p>\s*<\/p>/", "", $str);
+    $str = preg_replace("/<p>\s*<\/p>/", "<p></p>", $str);
     $str = preg_replace("/\n/", "<br />", $str);
+    $str = preg_replace("/<p>(<br />|\s*)?<\/p>/", "", $str);
     $str = trim($str);
     
     return $str;
@@ -85,9 +86,9 @@ abstract class StringHelper
       'MsoListParagraph'
     ], '', $content);
     
-    $content = preg_replace([
-      "/font-family:[^;]+;?/", 
-      "/ style=\"[^\"]*\"/", 
+    $content = mb_eregi_replace([
+      // 'font-family:\s*[^;]+;?', 
+      ' style=\"[^\"]*\"', 
       // "/ class=\"[^\"]*\"/",
     ], "", $content);
     
@@ -479,7 +480,7 @@ abstract class StringHelper
    *
    * @var    array
    */
-  protected static $incrementStyles = [
+  /* protected static $incrementStyles = [
     'dash' => [
       '#-(\d+)$#',
       '-%d'
@@ -488,7 +489,7 @@ abstract class StringHelper
       ['#\((\d+)\)$#', '#\(\d+\)$#'],
       [' (%d)', '(%d)'],
     ],
-  ];
+  ]; */
   
   /**
    * Increments a trailing number in a string.
@@ -503,7 +504,7 @@ abstract class StringHelper
    * @param   integer  $n       If supplied, this number is used for the copy, otherwise it is the 'next' number.
    * @return   string  The incremented string.
    */
-  public static function increment($string, $style = 'default', $n = 0)
+  /* public static function increment($string, $style = 'default', $n = 0)
   {
     $styleSpec = isset(self::$incrementStyles[$style]) ? self::$incrementStyles[$style] : self::$incrementStyles['default'];
 
@@ -542,7 +543,7 @@ abstract class StringHelper
     }
 
     return $string;
-  }
+  } */
   
   
   /**
@@ -555,26 +556,26 @@ abstract class StringHelper
    *
    * @link    https://bugs.php.net/bug.php?id=48147
    */
-  public static function transcode($source, $from_encoding, $to_encoding)
+  /* public static function transcode($source, $from_encoding, $to_encoding)
   {
     if (is_string($source))
     {
       set_error_handler(array(__CLASS__, '_iconvErrorHandler'), E_NOTICE);
       try
       {
-        /*
-         * "//TRANSLIT//IGNORE" is appended to the $to_encoding to ensure that when iconv comes
-         * across a character that cannot be represented in the target charset, it can
-         * be approximated through one or several similarly looking characters or ignored.
-         */
+        //
+        // "//TRANSLIT//IGNORE" is appended to the $to_encoding to ensure that when iconv comes
+        // across a character that cannot be represented in the target charset, it can
+        // be approximated through one or several similarly looking characters or ignored.
+        //
         $iconv = iconv($from_encoding, $to_encoding . '//TRANSLIT//IGNORE', $source);
       }
       catch (ErrorException $e)
       {
-        /*
-         * "//IGNORE" is appended to the $to_encoding to ensure that when iconv comes
-         * across a character that cannot be represented in the target charset, it is ignored.
-         */
+        //
+        // "//IGNORE" is appended to the $to_encoding to ensure that when iconv comes
+        // across a character that cannot be represented in the target charset, it is ignored.
+        //
         $iconv = iconv($from_encoding, $to_encoding . '//IGNORE', $source);
       }
       restore_error_handler();
@@ -582,7 +583,7 @@ abstract class StringHelper
     }
 
     return null;
-  }
+  } */
 
   /**
    * Tests a string as to whether it's valid UTF-8 and supported by the Unicode standard.
@@ -596,7 +597,7 @@ abstract class StringHelper
    * @see     http://hsivonen.iki.fi/php-utf8/
    * @see     compliant
    */
-  public static function valid($str)
+  /* public static function valid($str)
   {
     // Cached expected number of octets after the current octet
     // until the beginning of the next UTF8 character sequence
@@ -649,14 +650,14 @@ abstract class StringHelper
         }
         elseif (0xF8 == (0xFC & ($in)))
         {
-          /* First octet of 5 octet sequence.
-           *
-           * This is illegal because the encoded codepoint must be either
-           * (a) not the shortest form or
-           * (b) outside the Unicode range of 0-0x10FFFF.
-           * Rather than trying to resynchronize, we will carry on until the end
-           * of the sequence and let the later error handling code catch it.
-           */
+          // First octet of 5 octet sequence.
+          //
+          // This is illegal because the encoded codepoint must be either
+          // (a) not the shortest form or
+          // (b) outside the Unicode range of 0-0x10FFFF.
+          // Rather than trying to resynchronize, we will carry on until the end
+          // of the sequence and let the later error handling code catch it.
+          //
           $mUcs4 = ($in);
           $mUcs4 = ($mUcs4 & 0x03) << 24;
           $mState = 4;
@@ -673,9 +674,9 @@ abstract class StringHelper
         }
         else
         {
-          /* Current octet is neither in the US-ASCII range nor a legal first
-           * octet of a multi-octet sequence.
-           */
+          // Current octet is neither in the US-ASCII range nor a legal first
+          // octet of a multi-octet sequence.
+          // 
           return false;
         }
       }
@@ -691,15 +692,15 @@ abstract class StringHelper
           $tmp = ($tmp & 0x0000003F) << $shift;
           $mUcs4 |= $tmp;
 
-          /**
-           * End of the multi-octet sequence. mUcs4 now contains the final
-           * Unicode codepoint to be output
-           */
+          //
+          // End of the multi-octet sequence. mUcs4 now contains the final
+          // Unicode codepoint to be output
+          //
           if (0 == --$mState)
           {
-            /*
-             * Check for illegal sequences and codepoints.
-             */
+            //
+            // Check for illegal sequences and codepoints.
+            //
             // From Unicode 3.1, non-shortest form is illegal
             if (((2 == $mBytes) && ($mUcs4 < 0x0080)) || ((3 == $mBytes) && ($mUcs4 < 0x0800)) || ((4 == $mBytes) && ($mUcs4 < 0x10000))
               || (4 < $mBytes)
@@ -717,16 +718,16 @@ abstract class StringHelper
         }
         else
         {
-          /**
-           *((0xC0 & (*in) != 0x80) && (mState != 0))
-           * Incomplete multi-octet sequence.
-           */
+          //
+          //((0xC0 & (*in) != 0x80) && (mState != 0))
+          // Incomplete multi-octet sequence.
+          //
           return false;
         }
       }
     }
     return true;
-  }
+  } */
 
   /**
    * Tests whether a string complies as UTF-8. This will be much
@@ -744,7 +745,7 @@ abstract class StringHelper
    * @see     valid
    * @see     http://www.php.net/manual/en/reference.pcre.pattern.modifiers.php#54805
    */
-  public static function compliant($str)
+  /* public static function compliant($str)
   {
     if (strlen($str) == 0)
     {
@@ -755,7 +756,7 @@ abstract class StringHelper
     // invalid, nothing at all will match, even if the string contains
     // some valid sequences
     return (preg_match('/^.{1}/us', $str, $ar) == 1);
-  }
+  } */
   
   /**
    * Catch an error and throw an exception.
@@ -768,8 +769,8 @@ abstract class StringHelper
    *
    * @throw   ErrorException
    */
-  private static function _iconvErrorHandler($number, $message)
+  /* private static function _iconvErrorHandler($number, $message)
   {
     throw new ErrorException($message, 0, $number);
-  }
+  } */
 }

@@ -7,10 +7,6 @@
  */
 namespace JDZ\Utilities;
 
-use \DateTime;
-use \DateTimeZone;
-use \Exception as DateException;
-
 /**
  * Date object
  * 
@@ -18,7 +14,7 @@ use \Exception as DateException;
  * 
  * @author Joffrey Demetz <joffrey.demetz@gmail.com>
  */
-class Date extends DateTime
+class Date extends \DateTime
 {
   const DAY_ABBR   = "\x021\x03";
   const DAY_NAME   = "\x022\x03";
@@ -84,72 +80,24 @@ class Date extends DateTime
   public static $format = 'Y-m-d H:i:s';
   
   /**
-   * Placeholder for a DateTimeZone object with GMT as the time zone.
-   *
-   * @var    object
+   * Placeholder for a \DateTimeZone object with GMT as the time zone.
+   * 
+   * @var  \DateTimeZone
    */
   protected static $gmt;
   
   /**
-   * Placeholder for a DateTimeZone object with the default server
+   * Placeholder for a \DateTimeZone object with the default server
    * time zone as the time zone.
-   *
-   * @var    object
+   * 
+   * @var  \DateTimeZone
    */
   protected static $stz;
   
   /**
-   * An array of offsets and time zone strings
-   *
-   * @var    array
-   */
-  protected static $offsets = [
-    '-12'   => 'Etc/GMT-12', 
-    '-11'   => 'Pacific/Midway', 
-    '-10'   => 'Pacific/Honolulu', 
-    '-9.5'  => 'Pacific/Marquesas',
-    '-9'    => 'US/Alaska', 
-    '-8'    => 'US/Pacific', 
-    '-7'    => 'US/Mountain', 
-    '-6'    => 'US/Central', 
-    '-5'    => 'US/Eastern', 
-    '-4.5'  => 'America/Caracas',
-    '-4'    => 'America/Barbados', 
-    '-3.5'  => 'Canada/Newfoundland', 
-    '-3'    => 'America/Buenos_Aires', 
-    '-2'    => 'Atlantic/South_Georgia',
-    '-1'    => 'Atlantic/Azores', 
-    '0'     => 'Europe/London', 
-    '1'     => 'Europe/Amsterdam', 
-    '2'     => 'Europe/Istanbul', 
-    '3'     => 'Asia/Riyadh',
-    '3.5'   => 'Asia/Tehran', 
-    '4'     => 'Asia/Muscat', 
-    '4.5'   => 'Asia/Kabul', 
-    '5'     => 'Asia/Karachi', 
-    '5.5'   => 'Asia/Calcutta',
-    '5.75'  => 'Asia/Katmandu', 
-    '6'     => 'Asia/Dhaka', 
-    '6.5'   => 'Indian/Cocos', 
-    '7'     => 'Asia/Bangkok', 
-    '8'     => 'Australia/Perth',
-    '8.75'  => 'Australia/West', 
-    '9'     => 'Asia/Tokyo', 
-    '9.5'   => 'Australia/Adelaide', 
-    '10'    => 'Australia/Brisbane',
-    '10.5'  => 'Australia/Lord_Howe', 
-    '11'    => 'Pacific/Kosrae', 
-    '11.5'  => 'Pacific/Norfolk', 
-    '12'    => 'Pacific/Auckland',
-    '12.75' => 'Pacific/Chatham', 
-    '13'    => 'Pacific/Tongatapu', 
-    '14'    => 'Pacific/Kiritimati',
-  ];
-  
-  /**
-   * The DateTimeZone object for usage in rending dates as strings.
-   *
-   * @var    object
+   * The \DateTimeZone object for usage in rending dates as strings.
+   * 
+   * @var  \DateTimeZone
    */
   protected $_tz;
   
@@ -194,41 +142,37 @@ class Date extends DateTime
   {
     // Create the base GMT and server time zone objects.
     if ( !isset(self::$gmt) || !isset(self::$stz) ){
-      self::$gmt = new DateTimeZone('GMT');
-      self::$stz = new DateTimeZone(@date_default_timezone_get());
+      self::$gmt = new \DateTimeZone('GMT');
+      self::$stz = new \DateTimeZone(@\date_default_timezone_get());
     }
     
     // If the time zone object is not set, attempt to build it.
-    if ( !($tz instanceof DateTimeZone) ){
-      if ( $tz === null ){
-        $tz = self::$gmt;
-      }
-      elseif ( is_numeric($tz) ){
-        // Translate from offset.
-        $tz = new DateTimeZone(self::$offsets[(string) $tz]);
+    if ( !($tz instanceof \DateTimeZone) ){
+      if ( null === $tz ){
+        // $tz = self::$gmt;
+        $tz = self::$stz;
       }
       elseif ( is_string($tz) ){
-        $tz = new DateTimeZone($tz);
+        $tz = new \DateTimeZone($tz);
       }
     }
-    
-    $_TZ = date_default_timezone_get();
     
     // If the date is numeric assume a unix timestamp and convert it.
     if ( is_numeric($date) ){
-      date_default_timezone_set('UTC');
+      $_TZ = \date_default_timezone_get();
+      
+      \date_default_timezone_set('UTC');
       $date = date('c', $date);
-      date_default_timezone_set($_TZ);
+      \date_default_timezone_set($_TZ);
     }
     
-    // Call the DateTime constructor.
     parent::__construct($date, $tz);
-
-    // reset the timezone for 3rd party libraries/extension that does not use Date
-    date_default_timezone_set(self::$stz->getName());
     
     // Set the timezone object for access later.
     $this->_tz = $tz;
+
+    // reset the timezone for 3rd party libraries/extension that does not use Date
+    \date_default_timezone_set(self::$stz->getName());
   }
 
   /**
@@ -291,7 +235,7 @@ class Date extends DateTime
         break;
       
       default:
-        throw new DateException('Cannot access/get property ' . __CLASS__ . '::' . $name);
+        throw new \Exception('Cannot access/get property ' . __CLASS__ . '::' . $name);
     }
     
     return $value;
@@ -306,7 +250,17 @@ class Date extends DateTime
   {
     return (string) parent::format(self::$format);
   }
-
+  
+  public function isExpired(\DateInterval $validFor)
+  {
+    $now = self::create('now', $this->_tz);
+    
+    $expiresAt = clone $this;
+    $expiresAt->add($validFor);
+    
+    return $now > $expiresAt;
+  }
+  
   /**
    * Gets the date as a formatted string in a local calendar.
    *
@@ -489,8 +443,8 @@ class Date extends DateTime
    * Wrap the setTimezone() function and set the internal
    * time zone object.
    *
-   * @param   object  $tz  The new DateTimeZone object.
-   * @return   DateTimeZone  The old DateTimeZone object.
+   * @param   object  $tz  The new \DateTimeZone object.
+   * @return   \DateTimeZone  The old \DateTimeZone object.
    */
   public function setTimezone($tz)
   {
@@ -509,7 +463,7 @@ class Date extends DateTime
    */
   public function toISO8601($local=false)
   {
-    return $this->format(DateTime::RFC3339, $local, false);
+    return $this->format(\DateTime::RFC3339, $local, false);
   }
 
   /**
@@ -537,7 +491,7 @@ class Date extends DateTime
    */
   public function toRFC822($local=false)
   {
-    return $this->format(DateTime::RFC2822, $local, false);
+    return $this->format(\DateTime::RFC2822, $local, false);
   }
   
   /**
