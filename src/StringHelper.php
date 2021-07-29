@@ -110,6 +110,30 @@ abstract class StringHelper
     return $str;
   }
   
+  public static function stripHtml(string $html): string
+  {
+    $str = html_entity_decode($html);
+    $str = strip_tags($str);
+    $str = htmlentities($str);
+    $str = preg_replace("/[\r\n\s]+/", ' ', $str);
+    $str = html_entity_decode($str);
+    $str = str_replace('"', ' ', $str);
+    $str = trim($str);
+    return $str;
+  }
+  
+  public static function truncateText(string $text, int $maxLen, bool $hardBreak=false): string
+  {
+    if ( strlen($text) > $maxLen - 3 && $maxLen > 4 ){
+      $text = substr($text, 0, $maxLen - 3);
+      if ( strrpos($text, ' ') !== false && false === $hardBreak ){
+        $text = substr($text, 0, strrpos($text, ' '));
+      }
+      $text .= '...';
+    }
+    return $text;
+  }
+  
   /**
    * Generate a random string
    * 

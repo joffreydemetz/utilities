@@ -26,14 +26,22 @@ class HtmlCleaner
     'MsoBodyText',
     'MsoListParagraph'
   ];
-   
+  
   protected $styleAttributeProperties = [
     'font-family',
     'font-size',
     'font-variant',
+    'text-align', 
     'color',
+    'width',
+    'height',
+    'margin',
+    'margin-top',
+    'margin-left',
+    'margin-right',
+    'margin-bottom',
   ];
-   
+  
   public function __construct(string $content)
   {
     $this->content = $content;
@@ -85,7 +93,8 @@ class HtmlCleaner
       $this->content = str_replace($this->wordsOrKeywords, '', $this->content);
     }
     
-    $this->content = mb_ereg_replace('('.implode('|', $this->styleAttributeProperties).')\s*:\s*[^;"]+;?\s*', '', $this->content);
+    // $this->content = mb_ereg_replace('('.implode('|', $this->styleAttributeProperties).')\s*:\s*[^;"]+;?\s*', '', $this->content);
+    // $this->content = mb_ereg_replace(' class="\s*"', '', $this->content);
     $this->content = mb_ereg_replace(' style="\s*"', '', $this->content);
     
     return $this->content;

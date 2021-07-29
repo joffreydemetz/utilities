@@ -159,6 +159,8 @@ class Date extends \DateTime
     
     // If the date is numeric assume a unix timestamp and convert it.
     if ( is_numeric($date) ){
+      $date = (int)$date;
+      
       $_TZ = \date_default_timezone_get();
       
       \date_default_timezone_set('UTC');
