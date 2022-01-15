@@ -110,9 +110,10 @@ abstract class StringHelper
     return $str;
   }
   
-  public static function stripHtml(string $html): string
+  public static function stripHtml(string $str): string
   {
-    $str = html_entity_decode($html);
+    $str = str_replace('><', '> <', $str);
+    $str = html_entity_decode($str);
     $str = strip_tags($str);
     $str = htmlentities($str);
     $str = preg_replace("/[\r\n\s]+/", ' ', $str);
@@ -124,10 +125,10 @@ abstract class StringHelper
   
   public static function truncateText(string $text, int $maxLen, bool $hardBreak=false): string
   {
-    if ( strlen($text) > $maxLen - 3 && $maxLen > 4 ){
-      $text = substr($text, 0, $maxLen - 3);
-      if ( strrpos($text, ' ') !== false && false === $hardBreak ){
-        $text = substr($text, 0, strrpos($text, ' '));
+    if ( mb_strlen($text) > $maxLen - 3 && $maxLen > 4 ){
+      $text = mb_substr($text, 0, $maxLen - 3);
+      if ( mb_strrpos($text, ' ') !== false && false === $hardBreak ){
+        $text = mb_substr($text, 0, mb_strrpos($text, ' '));
       }
       $text .= '...';
     }
