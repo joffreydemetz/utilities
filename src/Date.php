@@ -253,6 +253,16 @@ class Date extends \DateTime
     return (string) parent::format(self::$format);
   }
   
+  // public static function createFromFormat(string $format, string $datetime, ?\DateTimeZone $timezone=null)
+  public static function createFromFormat($format, $datetime, $timezone=null)
+  {
+    if ( false === ($date = \DateTime::createFromFormat($format, $datetime)) ){
+      return false;
+    }
+    
+    return new self($date->format('Y-m-d H:i:s'), $timezone);
+  }
+  
   public function isExpired(\DateInterval $validFor)
   {
     $now = self::create('now', $this->_tz);

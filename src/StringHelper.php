@@ -86,11 +86,9 @@ abstract class StringHelper
       'MsoListParagraph'
     ], '', $content);
     
-    $content = mb_eregi_replace([
-      // 'font-family:\s*[^;]+;?', 
-      ' style=\"[^\"]*\"', 
-      // "/ class=\"[^\"]*\"/",
-    ], "", $content);
+    // $content = mb_eregi_replace(' font-family:\s*[^;]+;?', "", $content);
+    $content = mb_eregi_replace(' style=\"[^\"]*\"', "", $content);
+    // $content = mb_eregi_replace(' class=\"[^\"]*\"', "", $content);
     
     return $content;
   }  
