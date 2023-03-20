@@ -63,15 +63,15 @@ class AttributesHelper
       elseif ( false === $value ){
         $value = 'false';
       }
-      else {
+      elseif ( $value ){
         $value = trim($value);
+        $value = str_replace('"', '\"', $value);
+      }
+      else {
+        $value = '';
       }
       
-      // if ( '' === $value ){
-        // $value = $key;
-      // }
-      
-      $attributes[] = $key.'="'.str_replace('"', '\"', trim($value)).'"';
+      $attributes[] = $key.'="'.$value.'"';
     }
     
     $attrs = implode(' ', $attributes);

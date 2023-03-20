@@ -19,7 +19,7 @@ class Step
    * 
    * @var  string
    */
-  public $label = '';
+  public string $label = '';
   
   /**
    * Label complementary info

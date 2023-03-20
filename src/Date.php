@@ -346,14 +346,14 @@ class Date extends \DateTime
     return $return;
   }
 
-  public function zfyDateWithYearOrNot(): string
+  public function zfyWithYear(): string
   {
     $now = self::create('now');
     
     if ( $this->format('Y') === $now->format('Y') ){
-      return $this->format('Z F');
+      return $this->format('jS F');
     }
-    return $this->format('Z F Y');
+    return $this->zfy();
   }
 
   /**
@@ -489,7 +489,6 @@ class Date extends \DateTime
   public function toSql($local=false)
   {
     return $this->format('Y-m-d H:i:s', $local, false);
-    // return $this->format(Kernel()->dbo->dateFormat, $local, false);
   }
   
   /**

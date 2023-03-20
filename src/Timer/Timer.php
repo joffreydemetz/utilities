@@ -21,7 +21,7 @@ class Timer
    * 
    * @var  string
    */
-  public $name = '';
+  public string $name = '';
   
   /**
    * Start point
