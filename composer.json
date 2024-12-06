@@ -4,7 +4,7 @@
     "description": "Some usefull utilties",
     "keywords": ["data","date","xml"],
     "homepage": "https://github.com/joffreydemetz/utilities/",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "license": "MIT",
     
     "authors": [
